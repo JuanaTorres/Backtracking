@@ -17,16 +17,7 @@ public class Controller {
 				"Por favor ingresa que cual de los algoritmos quieres hacer \n1. Nutricionista va a un restaurante(Backtracking) \n2. Liga de futbol Colombiana (Backtracking)\n3. Saltos de un conejo(Rama y Poda)\n4 Cualquier otro numero para salir");
 		switch (a) {
 		case 1: {
-//			Menu[] m = { 
-//					new Menu("Mango",10),
-//					new Menu("Salchicha",8),
-//					new Menu("perro",1),
-//					new Menu("Mango",2)};
-//
-//			Nutricionista m_base = new Nutricionista(9, m.length);
-//			Nutricionista m_opt = new Nutricionista(9, m.length);
-//			String a=m_base.seleccionarBackT(m_base,m_opt,false,m);
-//			System.out.println(a);
+			llenarProblemaMenu();
 			break;
 		}
 		case 2: {
@@ -42,5 +33,28 @@ public class Controller {
 			System.exit(0);
 		}
 
+	}
+
+	public void llenarProblemaMenu() {
+		int cantidad = vista.leerDatoEntero("Por favor ingrese la cantidad de alimentos en el menu");
+		Menu[] menu = new Menu[cantidad];
+		for (int i = 0; i < cantidad; i++) {
+			String comida = vista.leerdato("Ingrese el nombre de la comida");
+			for (int j = 0; j < menu.length; j++) {
+				if (menu[j] != null) {
+					while (menu[j].getComida().equals(comida.toLowerCase())) {
+						vista.imprimirMensajeAd("Ya existe ese nombre en el menu");
+						comida = vista.leerdato("Ingrese nuevamente el nombre de la comida");
+					}
+				}
+			}
+			int calorias = vista.leerDatoEntero("Por favor la calorias de la comida " + comida);
+			menu[i]=new Menu(comida.toLowerCase(),calorias);
+		}
+		int maxCalorias= vista.leerDatoEntero("Ingrese las colorias maximas");
+		Nutricionista m_base = new Nutricionista(maxCalorias, menu.length);
+		Nutricionista m_opt = new Nutricionista(maxCalorias, menu.length);
+		String a = m_base.seleccionarBackT(m_base, m_opt, false, menu);
+		vista.imprimirMensaje("Teniendo maximo "+ maxCalorias+ " calorias, se tiene"+a);
 	}
 }
