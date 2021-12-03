@@ -26,7 +26,7 @@ public class Nutricionista {
 			for (int i = 0; i < m.length; i++) {
 					calorias.add(m[i].getCalorias());
 			}
-			CombinacionBack(calorias,vacio, 0);
+			combinacionBack(calorias,vacio, 0);
 			Collections.sort(r);
 			setMincalorias(r.get(0));
 			Nutricionista m_base = new Nutricionista(r.get(0), menu.length);
@@ -64,7 +64,7 @@ public class Nutricionista {
 		
 		return optimo;
 	}
-	public  void CombinacionBack(ArrayList<Integer> calorias,ArrayList<Integer> vacio, int suma) {
+	public  void combinacionBack(ArrayList<Integer> calorias,ArrayList<Integer> vacio, int suma) {
 		if (suma >= getMincalorias()) {
 			this.r.add(suma);
 		} else {
@@ -73,11 +73,11 @@ public class Nutricionista {
 				suma+=calorias.get(i);
 				if (suma <= getMincalorias()) {
 					vacio.add(calorias.get(i));
-					CombinacionBack( calorias, vacio,suma);
+					combinacionBack( calorias, vacio,suma);
 					vacio.remove(vacio.indexOf(calorias.get(i)));
 				}else if (suma > getMincalorias()) {
 					vacio.add(calorias.get(i));
-					CombinacionBack( calorias, vacio,suma);
+					combinacionBack( calorias, vacio,suma);
 					vacio.remove(vacio.indexOf(calorias.get(i)));
 				}
 				suma-=calorias.get(i);
