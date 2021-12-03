@@ -37,6 +37,19 @@ public class Nutricionista {
 					}
 				}
 			}
+		}if(optimo==null||optimo.getCalorias()==0) {
+			int min= Integer.MAX_VALUE;
+			String comida="";
+			for (int i = 0; i < m.length; i++) {
+				if(m[i].getCalorias()<min) {
+					min=m[i].getCalorias();
+					comida=m[i].getComida();
+				}
+			}
+			String resultado = "\nYa que todos los platos ingresados superan la calorias maximas, se sugiere el de menor caloria\n";
+			resultado += "Las calorias totales: " + min + "\n";
+			resultado += "El nombre de los platos a pedir: \n" + comida;
+			return resultado;
 		}
 		return optimo.toString();
 	}
@@ -115,7 +128,7 @@ public class Nutricionista {
 
 	@Override
 	public String toString() {
-		String resultado = "";
+		String resultado = "\n";
 		resultado += "Las calorias totales: " + getCalorias() + "\n";
 		resultado += "El nombre de los platos a pedir: \n" + getComida();
 		return resultado;
