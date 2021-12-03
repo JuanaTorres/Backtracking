@@ -1,19 +1,42 @@
 package co.edu.unbosque.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Nutricionista {
-	private int maxcalorias;
+	private int mincalorias;
 	private Menu[] menu;
 	private int calorias;
 	private String comida;
+	private ArrayList<Integer> r;
 
 	public Nutricionista(int calorias, int cantidadPlatos) {
-		this.maxcalorias = calorias;
+		this.mincalorias = calorias;
 		this.menu = new Menu[cantidadPlatos];
 		this.calorias = 0;
 		this.comida = "";
+		this.r = new ArrayList<>();
 	}
-
-	public String seleccionarBackT(Nutricionista base, Nutricionista optimo, boolean completo, Menu[] m) {
+	public String realizarBackTracking(Nutricionista base, Nutricionista optimo, boolean completo, Menu[] m) {
+		optimo=this.seleccionarBackT(base, optimo, false, m);
+		if(optimo==null||optimo.getCalorias()==0||getMincalorias() != optimo.getCalorias()) {
+			System.out.println("AA");
+			ArrayList<Integer> calorias = new ArrayList<>();
+			ArrayList<Integer> vacio = new ArrayList<>();
+			for (int i = 0; i < m.length; i++) {
+					calorias.add(m[i].getCalorias());
+			}
+			CombinacionBack(calorias,vacio, 0);
+			Collections.sort(r);
+			setMincalorias(r.get(0));
+			Nutricionista m_base = new Nutricionista(r.get(0), menu.length);
+			Nutricionista m_opt = new Nutricionista(r.get(0), menu.length);
+			optimo=this.seleccionarBackT(m_base, m_opt, false, m);
+		}
+		return optimo.toString();
+	}
+	public Nutricionista seleccionarBackT(Nutricionista base, Nutricionista optimo, boolean completo, Menu[] m) {
+		
 		if (completo) {
 			if (base.getCalorias() > optimo.getCalorias()) {
 				Menu[] mbase = base.getMenu();
@@ -28,7 +51,7 @@ public class Nutricionista {
 		} else {
 			for (int i = 0; i < m.length; i++) {
 				if (!base.existePlato(m[i])) {
-					if (getMaxcalorias() >= base.getCalorias()  + m[i].getCalorias() ) {
+					if (getMincalorias() >= base.getCalorias()  + m[i].getCalorias() ) {
 						base.agregarPlato(m[i]);
 						this.seleccionarBackT(base, optimo, false, m);
 						base.eliminarPlato(m[i]);
@@ -37,21 +60,29 @@ public class Nutricionista {
 					}
 				}
 			}
-		}if(optimo==null||optimo.getCalorias()==0) {
-			int min= Integer.MAX_VALUE;
-			String comida="";
-			for (int i = 0; i < m.length; i++) {
-				if(m[i].getCalorias()<min) {
-					min=m[i].getCalorias();
-					comida=m[i].getComida();
-				}
-			}
-			String resultado = "\nYa que todos los platos ingresados superan la calorias maximas, se sugiere el de menor caloria\n";
-			resultado += "Las calorias totales: " + min + "\n";
-			resultado += "El nombre de los platos a pedir: \n" + comida;
-			return resultado;
 		}
-		return optimo.toString();
+		
+		return optimo;
+	}
+	public  void CombinacionBack(ArrayList<Integer> calorias,ArrayList<Integer> vacio, int suma) {
+		if (suma >= getMincalorias()) {
+			this.r.add(suma);
+		} else {
+
+			for (int i = 0; i < calorias.size(); i++) {
+				suma+=calorias.get(i);
+				if (suma <= getMincalorias()) {
+					vacio.add(calorias.get(i));
+					CombinacionBack( calorias, vacio,suma);
+					vacio.remove(vacio.indexOf(calorias.get(i)));
+				}else if (suma > getMincalorias()) {
+					vacio.add(calorias.get(i));
+					CombinacionBack( calorias, vacio,suma);
+					vacio.remove(vacio.indexOf(calorias.get(i)));
+				}
+				suma-=calorias.get(i);
+			}
+		}
 	}
 
 	public void agregarPlato(Menu menu) {
@@ -94,12 +125,12 @@ public class Nutricionista {
 		return false;
 	}
 
-	public int getMaxcalorias() {
-		return maxcalorias;
+	public int getMincalorias() {
+		return mincalorias;
 	}
 
-	public void setMaxcalorias(int maxcalorias) {
-		this.maxcalorias = maxcalorias;
+	public void setMincalorias(int maxcalorias) {
+		this.mincalorias = maxcalorias;
 	}
 
 	public Menu[] getMenu() {

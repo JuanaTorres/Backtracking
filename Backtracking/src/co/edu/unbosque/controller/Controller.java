@@ -37,6 +37,9 @@ public class Controller {
 
 	public void llenarProblemaMenu() {
 		int cantidad = vista.leerDatoEntero("Por favor ingrese la cantidad de alimentos en el menu");
+		while(cantidad<=2) {
+			 cantidad = vista.leerDatoEntero("Por favor ingrese la cantidad de alimentos en el menu mayor a 2");
+		}
 		Menu[] menu = new Menu[cantidad];
 		for (int i = 0; i < cantidad; i++) {
 			String comida = vista.leerdato("Ingrese el nombre de la comida");
@@ -51,10 +54,10 @@ public class Controller {
 			int calorias = vista.leerDatoEntero("Por favor la calorias de la comida " + comida);
 			menu[i]=new Menu(comida.toLowerCase(),calorias);
 		}
-		int maxCalorias= vista.leerDatoEntero("Ingrese las colorias maximas");
-		Nutricionista m_base = new Nutricionista(maxCalorias, menu.length);
-		Nutricionista m_opt = new Nutricionista(maxCalorias, menu.length);
-		String a = m_base.seleccionarBackT(m_base, m_opt, false, menu);
-		vista.imprimirMensaje("Teniendo maximo "+ maxCalorias+ " calorias, se tiene"+a);
+		int minCalorias= vista.leerDatoEntero("Ingrese las colorias minimas");
+		Nutricionista m_base = new Nutricionista(minCalorias, menu.length);
+		Nutricionista m_opt = new Nutricionista(minCalorias, menu.length);
+		String a = m_base.realizarBackTracking(m_base, m_opt, false, menu);
+		vista.imprimirMensaje("Teniendo minimo "+ minCalorias+ " calorias, se tiene"+a);
 	}
 }
