@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import co.edu.unbosque.model.Conejo;
 import co.edu.unbosque.model.Menu;
+import co.edu.unbosque.model.Equipo;
 import co.edu.unbosque.model.Nutricionista;
 import co.edu.unbosque.view.View;
 /**
@@ -20,11 +21,14 @@ import co.edu.unbosque.view.View;
  */
 public class Controller {
 	private View vista;
+	private Equipo equipo;
 	/**
 	 * Constructor de controller
 	 */
 	public Controller() {
 		vista = new View();
+		equipo = new Equipo();
+
 		funcionar();
 	}
 	/**
@@ -39,6 +43,7 @@ public class Controller {
 			break;
 		}
 		case 2: {
+			llenarMenu2();
 
 			break;
 		}
@@ -90,5 +95,57 @@ public class Controller {
 		Nutricionista m_opt = new Nutricionista(minCalorias, menu.length);
 		String a = m_base.realizarBackTracking(m_base, m_opt, false, menu);
 		vista.imprimirMensaje("Teniendo minimo "+ minCalorias+ " calorias, se tiene"+a);
+	}
+
+	/**
+	 * Agregando tamaño n equipos, m arbitros
+	 * Backtracking
+	 */
+	public void llenarMenu2() {
+		int n = vista.leerDatoEntero("Por favor ingrese la cantidad de Equipos que van a jugar");
+		if(n%2 != 0){
+			vista.imprimirMensaje("La cantidad de equipos debe ser par");
+			llenarMenu2();
+		}
+		int m = vista.leerDatoEntero("Por favor ingrese la cantidad de Arbitros.");
+		if(m < n%2){
+			vista.imprimirMensaje("La cantidad de arbitros debe ser mayor a la cantidad de equipos entre 2");
+			llenarMenu2();
+		}
+		int opcion = vista.leerDatoEntero("Escoga una opción \n1. Ingresar la puntuación de cada equipo a cada arbitro (de 0 a 10).\n2.Salir (cualquier numero)");
+		switch (opcion) {
+		case 1: {
+			var puntuaciones = ingresarPuntuaciones(n,m);
+				int[][] combinaciones = {{0,1},{2,3}};
+				System.out.println("Jornada 1"+equipo.imprimirArray(equipo.enfrentamientoJornada(puntuaciones, combinaciones, n, m))); 
+				int [][] combinaciones2 = {{0,2},{1,3}};
+				System.out.println("Jornada 2"+equipo.imprimirArray(equipo.enfrentamientoJornada(puntuaciones, combinaciones2, n, m)));
+				int [][] combinaciones3 = {{0,3},{1,2}};
+				System.out.println("Jornada 3"+equipo.imprimirArray(equipo.enfrentamientoJornada(puntuaciones, combinaciones3, n, m)));
+
+			break;
+		}
+		default:
+			vista.imprimirMensaje("Hasta luego!");
+			System.exit(0);
+		}
+	}
+	/**
+	 * Agregando puntuacion por equipo a los arbitros
+	 * @param n -> cantidad de equipos
+	 * @param m -> cantidad de arbitros
+	 */
+	public int[][] ingresarPuntuaciones(int n,int m){
+		int[][] puntuaciones = new int[m][n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				puntuaciones[i][j] = vista.leerDatoEntero("Por favor ingrese la puntuación del equipo " + (j + 1) + " al arbitro " + (i + 1));
+				while(puntuaciones[i][j] < 0 || puntuaciones[i][j] > 10){
+					vista.imprimirMensaje("La puntuación debe estar entre 0 y 10");
+					puntuaciones[i][j] = vista.leerDatoEntero("Por favor ingrese la puntuación del equipo " + (j + 1) + " al arbitro " + (i + 1));
+				}
+			}
+		}
+		return puntuaciones;
 	}
 }
