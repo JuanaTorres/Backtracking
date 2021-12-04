@@ -148,31 +148,6 @@ public class Conejo {
 	
 	
 
-	public static void main(String[] args) {
-
-		Scanner scan = new Scanner(System.in);
-
-		System.out.println("Ingrese el tamaño del campo");
-		int campo = scan.nextInt();
-
-		// Punto inicial (X,Y)
-		System.out.println("Ingrese el punto inicial X ");
-		int inicioX = scan.nextInt();
-
-		System.out.println("Ingrese el punto inicial Y");
-		int inicioY = scan.nextInt();
-
-		// Punto Final (X,Y)
-		System.out.println("Ingrese el punto final X ");
-		int finalX = scan.nextInt();
-
-		System.out.println("Ingrese el punto final Y");
-		int finalY = scan.nextInt();
-
-		Conejo conejo = new Conejo(campo, campo, inicioX, inicioY, finalX, finalY);
-
-	}
-
 	/**
 	 * Metodo que ayuda a comprobar que el movimiento no se pase del limite 
 	 * @param x
@@ -432,8 +407,6 @@ public class Conejo {
 	public void setMtrFinal(int[][] mtrFinal) {
 		this.mtrFinal = mtrFinal;
 	}
-	
-	
 	
 	
 

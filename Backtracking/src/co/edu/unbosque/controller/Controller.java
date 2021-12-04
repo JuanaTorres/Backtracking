@@ -3,6 +3,9 @@
 */
 package co.edu.unbosque.controller;
 
+import java.util.Scanner;
+
+import co.edu.unbosque.model.Conejo;
 import co.edu.unbosque.model.Menu;
 import co.edu.unbosque.model.Nutricionista;
 import co.edu.unbosque.view.View;
@@ -40,11 +43,22 @@ public class Controller {
 			break;
 		}
 		case 3: {
+		
 
-			break;
+			int campo = vista.leerDatoEntero("Ingrese el tamaño del campo");
+
+			// Punto inicial (X,Y)
+			int inicioX = vista.leerDatoEntero("Ingrese el punto inicial X ");
+			int inicioY = vista.leerDatoEntero("Ingrese el punto inicial Y");
+
+			// Punto Final (X,Y)
+			int finalX = vista.leerDatoEntero("Ingrese el punto final X ");
+			int finalY = vista.leerDatoEntero("Ingrese el punto final Y");
+
+			Conejo conejo = new Conejo(campo, campo, inicioX, inicioY, finalX, finalY);
 		}
 		default:
-			vista.imprimirMensaje("ï¿½Hasta luego!");
+			vista.imprimirMensaje("Hasta Luego!");
 			System.exit(0);
 		}
 
